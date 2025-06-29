@@ -2,7 +2,7 @@
 // *** สำคัญ: เปลี่ยนเป็น Web App URL ที่ได้จากการ Deploy Apps Script ***
 const APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwkebYkHKmOQ70-STvMfC6uuUy9MknB9NxrVeRWgQasUFuYP1CacRod_xjroh2-yLle-A/exec';
 // *** สำคัญ: เปลี่ยนเป็น LIFF ID ที่ได้จาก LINE Developers Console ***
-const LIFF_ID = 'YOUR_LIFF_ID';
+const LIFF_ID = '2006679138-wW8N5Zol';
 
 let lineUserId = null; // เก็บ LINE User ID
 let currentUserData = null; // เก็บข้อมูลผู้ใช้ที่ดึงจาก Sheet
