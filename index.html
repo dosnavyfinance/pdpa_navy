@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDPA Consent Form</title>
+    <link rel="stylesheet" href="style.css">
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/sdk/v2/liff.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>แบบฟอร์มยินยอม PDPA</h1>
+
+        <div id="loadingMessage" class="message loading">กำลังโหลด...</div>
+
+        <div id="inputSection">
+            <label for="idCardInput">กรอกเลขบัตรประชาชน (13 หลัก):</label>
+            <input type="text" id="idCardInput" maxlength="13" placeholder="ตัวอย่าง: 1234567890123">
+            <button id="checkIdCardBtn">ตรวจสอบข้อมูล</button>
+            <div id="errorMessage" class="message error"></div>
+        </div>
+
+        <div id="pdpaSection" style="display: none;">
+            <p><strong>ข้อมูลของคุณ:</strong></p>
+            <p>ยศ: <span id="userTitle"></span></p>
+            <p>ชื่อ: <span id="userFirstName"></span></p>
+            <p>นามสกุล: <span id="userLastName"></span></p>
+
+            <hr>
+
+            <h2>นโยบายความเป็นส่วนตัว (PDPA)</h2>
+            <div id="pdpaContent" class="pdpa-text">
+                </div>
+
+            <div class="consent-checkbox">
+                <input type="checkbox" id="consentCheckbox">
+                <label for="consentCheckbox">ข้าพเจ้าได้อ่าน ทำความเข้าใจ และยอมรับข้อกำหนดทั้งหมด</label>
+            </div>
+
+            <button id="saveConsentBtn">บันทึกการยินยอม</button>
+            <div id="successMessage" class="message success"></div>
+            <div id="saveErrorMessage" class="message error"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
