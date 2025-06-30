@@ -1,14 +1,14 @@
-// --- Global Variables ---
-// *** สำคัญ: เปลี่ยนเป็น Web App URL ที่ได้จากการ Deploy Apps Script ***
-
-
 const scriptURL = 'https://script.google.com/macros/s/AKfycbwkebYkHKmOQ70-STvMfC6uuUy9MknB9NxrVeRWgQasUFuYP1CacRod_xjroh2-yLle-A/exec';
 let userProfile = {};
 
-window.onload = async function () {
+document.addEventListener('DOMContentLoaded', async function () {
   try {
-    await liff.init({ liffId: '2006679138-wW8N5Zol' });
-    if (!liff.isLoggedIn()) liff.login();
+    await liff.init({ liffId: '2006679138-wW8N5Zol' }); // ใส่ LIFF ID จริง
+
+    if (!liff.isLoggedIn()) {
+      liff.login();
+      return;
+    }
 
     const profile = await liff.getProfile();
     userProfile = {
@@ -19,18 +19,19 @@ window.onload = async function () {
 
     document.getElementById('loadingMessage').style.display = 'none';
     document.getElementById('inputSection').style.display = 'block';
+
   } catch (err) {
     document.getElementById('loadingMessage').innerText = 'โหลด LIFF ไม่สำเร็จ';
-    console.error(err);
+    console.error('LIFF init failed:', err);
   }
 
   document.getElementById('checkIdCardBtn').addEventListener('click', checkIdCard);
   document.getElementById('saveConsentBtn').addEventListener('click', saveConsent);
-};
+});
 
 function checkIdCard() {
   const idCard = document.getElementById('idCardInput').value.trim();
-  if (!/^\\d{13}$/.test(idCard)) {
+  if (!/^\d{13}$/.test(idCard)) {
     showError('errorMessage', 'กรุณากรอกเลขบัตรให้ถูกต้อง');
     return;
   }
@@ -49,7 +50,8 @@ function checkIdCard() {
       } else {
         showError('errorMessage', data.message);
       }
-    }).catch(() => showError('errorMessage', 'เกิดข้อผิดพลาด'));
+    })
+    .catch(() => showError('errorMessage', 'เกิดข้อผิดพลาดในการตรวจสอบ'));
 }
 
 function saveConsent() {
@@ -76,7 +78,7 @@ function saveConsent() {
         showError('saveErrorMessage', data.message);
       }
     })
-    .catch(() => showError('saveErrorMessage', 'ไม่สามารถบันทึกได้'));
+    .catch(() => showError('saveErrorMessage', 'ไม่สามารถบันทึกข้อมูลได้'));
 }
 
 function showError(id, message) {
