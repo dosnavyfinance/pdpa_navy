@@ -1,8 +1,10 @@
 body {
   font-family: 'Sarabun', sans-serif;
-  background: #f7f7f7;
+  background-color: #f7f7f7;
+  margin: 0;
   padding: 20px;
 }
+
 .container {
   max-width: 600px;
   margin: auto;
@@ -11,16 +13,20 @@ body {
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
+
 .message {
   margin-top: 10px;
   font-size: 0.9em;
 }
+
 .message.error {
   color: red;
 }
+
 .message.success {
   color: green;
 }
+
 .pdpa-text {
   border: 1px solid #ccc;
   max-height: 200px;
@@ -29,6 +35,7 @@ body {
   margin-bottom: 10px;
   background: #f0f0f0;
 }
+
 button {
   padding: 10px 20px;
   background: #00b900;
@@ -37,6 +44,20 @@ button {
   border-radius: 5px;
   cursor: pointer;
 }
+
 button:hover {
   background: #009e00;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.consent-checkbox {
+  margin-top: 10px;
 }
