@@ -79,9 +79,35 @@
     .consent-area {
       margin-top: 10px;
     }
+    .lds-ring {
+    display: inline-block;
+    position: relative;
+    width: 64px;
+    height: 64px;
+  }
+  .lds-ring div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 51px;
+    height: 51px;
+    margin: 6px;
+    border: 6px solid #2d87f0;
+    border-radius: 50%;
+    animation: lds-ring 1.2s linear infinite;
+    border-color: #2d87f0 transparent transparent transparent;
+  }
+  @keyframes lds-ring {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
   </style>
 </head>
 <body>
+  <div id="loadingSpinner" class="hidden" style="text-align:center;">
+  <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+  <p>กำลังโหลดข้อมูล...</p>
+  </div>
   <div class="container">
     <h2>แสดงข้อมูลผู้ใช้ LINE</h2>
     <img id="profileImage">
@@ -145,14 +171,51 @@
       }
     }, err => console.error('LIFF init error:', err));
 
-    function showPDPASection() {
-      const idCard = document.getElementById("idCardInput").value.trim();
-      if (!/^\d{13}$/.test(idCard)) {
-        alert("กรุณากรอกเลขบัตรประชาชนให้ถูกต้อง (13 หลัก)");
-        return;
+function showPDPASection() {
+  const idCard = document.getElementById("idCardInput").value.trim();
+  if (!/^\d{13}$/.test(idCard)) {
+    alert("กรุณากรอกเลขบัตรประชาชนให้ถูกต้อง (13 หลัก)");
+    return;
+  }
+
+  showLoading(true);
+  const lineUserId = document.getElementById("userId").value;
+
+  fetch("https://script.google.com/macros/s/xxxxxxxxxxxxxxxxxxxx/exec", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      action: "checkIdCard",
+      idCard: idCard
+    })
+  })
+    .then(res => res.json())
+    .then(data => {
+      showLoading(false);
+      if (data.status === "success") {
+        alert(`ชื่อ: ${data.title} ${data.firstName} ${data.lastName}`);
+
+        if (data.consent === "1") {
+          alert("คุณได้ลงทะเบียนยินยอม PDPA แล้ว");
+          document.getElementById("pdpaSection").style.display = "none";
+        } else {
+          document.getElementById("pdpaSection").classList.remove("hidden");
+        }
+      } else {
+        alert(data.message);
       }
-      document.getElementById("pdpaSection").classList.remove("hidden");
-    }
+    })
+    .catch(err => {
+      showLoading(false);
+      console.error(err);
+      alert("เกิดข้อผิดพลาดในการเชื่อมต่อ");
+    });
+}
+
+function showLoading(show) {
+  const spinner = document.getElementById("loadingSpinner");
+  spinner.style.display = show ? "block" : "none";
+}
 
     function submitConsent() {
       if (!document.getElementById("consentCheckbox").checked) {
