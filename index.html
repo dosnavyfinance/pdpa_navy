@@ -4,30 +4,81 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ลงทะเบียน PDPA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Sarabun', sans-serif;
       margin: 30px;
       background-color: #f5f5f5;
     }
     .container {
-      max-width: 600px;
+      max-width: 500px;
       margin: auto;
       background: white;
       padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
     input[type="text"] {
       width: 100%;
       padding: 10px;
-      margin-bottom: 10px;
-      border-radius: 5px;
+      margin-bottom: 15px;
+      border-radius: 6px;
       border: 1px solid #ccc;
+      font-size: 1rem;
+      box-sizing: border-box;
     }
-    label { font-weight: bold; }
-    .hidden { display: none; }
-    img { width: 100px; border-radius: 50%; display: block; margin: auto; }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+    }
+    .hidden {
+      display: none;
+    }
+    img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+      margin: 0 auto 20px;
+      border: 2px solid #ccc;
+    }
+    h2, h3 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #2d87f0;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 15px;
+    }
+    button:hover {
+      background-color: #226ccc;
+    }
+    #pdpaSection {
+      margin-top: 30px;
+    }
+    .pdpa-box {
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      padding: 15px;
+      border-radius: 8px;
+      background-color: #fdfdfd;
+      margin-bottom: 15px;
+    }
+    .consent-area {
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
@@ -43,11 +94,33 @@
     <label>Status Message</label>
     <input type="text" id="statusMessage" readonly>
 
-    <hr
-    <div id="idCardSection">    
+    <hr>
+    <div id="idCardSection" class="hidden">
       <h3>กรุณากรอกเลขบัตรประชาชน</h3>
       <input type="text" id="idCardInput" placeholder="กรอกเลขบัตร 13 หลัก">
-      <button onclick="submitIdCard()">ถัดไป</button>
+      <button onclick="showPDPASection()">ถัดไป</button>
+    </div>
+
+    <div id="pdpaSection" class="hidden">
+      <h3>นโยบายคุ้มครองข้อมูลส่วนบุคคล (PDPA)</h3>
+      <div class="pdpa-box">
+        <h4>1. การเก็บข้อมูล</h4>
+        <p>เราจะเก็บข้อมูลส่วนบุคคลที่จำเป็นสำหรับการให้บริการ...</p>
+        <h4>2. การใช้ข้อมูล</h4>
+        <p>ข้อมูลที่เก็บจะถูกนำไปใช้เพื่อวัตถุประสงค์ที่ชัดเจน เช่น การติดต่อกลับ...</p>
+        <h4>3. การเปิดเผยข้อมูล</h4>
+        <p>เราจะไม่เปิดเผยข้อมูลส่วนบุคคลของคุณแก่บุคคลภายนอก...</p>
+        <h4>4. สิทธิของเจ้าของข้อมูล</h4>
+        <p>คุณสามารถร้องขอเข้าถึง แก้ไข หรือเพิกถอนความยินยอมได้...</p>
+        <!-- เพิ่มเนื้อหาได้ตามจริง -->
+      </div>
+
+      <div class="consent-area">
+        <input type="checkbox" id="consentCheckbox">
+        <label for="consentCheckbox">ข้าพเจ้าได้อ่านและยินยอมตามนโยบายข้างต้น</label>
+      </div>
+
+      <button onclick="submitConsent()">บันทึกการยินยอม</button>
     </div>
   </div>
 
@@ -72,14 +145,22 @@
       }
     }, err => console.error('LIFF init error:', err));
 
-    function submitIdCard() {
+    function showPDPASection() {
       const idCard = document.getElementById("idCardInput").value.trim();
       if (!/^\d{13}$/.test(idCard)) {
         alert("กรุณากรอกเลขบัตรประชาชนให้ถูกต้อง (13 หลัก)");
         return;
       }
-      alert("บัตรประชาชนที่กรอกคือ: " + idCard);
-      // ไปต่อขั้นตอนแสดงข้อมูล PDPA ได้ที่นี่ในขั้นตอนถัดไป
+      document.getElementById("pdpaSection").classList.remove("hidden");
+    }
+
+    function submitConsent() {
+      if (!document.getElementById("consentCheckbox").checked) {
+        alert("กรุณายินยอมก่อนบันทึก");
+        return;
+      }
+      alert("บันทึกความยินยอมเรียบร้อย");
+      // ต่อไปจะเป็นการส่งข้อมูลไปยัง Google Sheet (ในขั้นถัดไป)
     }
   </script>
 </body>
