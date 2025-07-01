@@ -1,159 +1,86 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PDPA Consent Form</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ลงทะเบียน PDPA</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+      background-color: #f5f5f5;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    label { font-weight: bold; }
+    .hidden { display: none; }
+    img { width: 100px; border-radius: 50%; display: block; margin: auto; }
+  </style>
 </head>
 <body>
   <div class="container">
-    <h1>แบบฟอร์มยินยอม PDPA</h1>
-    <div id="loadingMessage" class="message loading">กำลังโหลด...</div>
+    <h2>แสดงข้อมูลผู้ใช้ LINE</h2>
+    <img id="profileImage">
+    <label>User ID</label>
+    <input type="text" id="userId" readonly>
 
-    <div id="inputSection" style="display:none">
-      <label for="idCardInput">กรอกเลขบัตรประชาชน (13 หลัก):</label>
-      <input type="text" id="idCardInput" maxlength="13" placeholder="ตัวอย่าง: 1234567890123" />
-      <button id="checkIdCardBtn">ตรวจสอบข้อมูล</button>
-      <div id="errorMessage" class="message error"></div>
-    </div>
+    <label>Display Name</label>
+    <input type="text" id="displayName" readonly>
 
-    <div id="pdpaSection" style="display: none;">
-      <p><strong>ข้อมูลของคุณ:</strong></p>
-      <p>ยศ: <span id="userTitle"></span></p>
-      <p>ชื่อ: <span id="userFirstName"></span></p>
-      <p>นามสกุล: <span id="userLastName"></span></p>
+    <label>Status Message</label>
+    <input type="text" id="statusMessage" readonly>
 
-      <hr />
-      <h2>นโยบายความเป็นส่วนตัว (PDPA)</h2>
-      <div id="pdpaContent" class="pdpa-text"></div>
-
-      <div class="consent-checkbox">
-        <input type="checkbox" id="consentCheckbox" />
-        <label for="consentCheckbox">ข้าพเจ้าได้อ่าน ทำความเข้าใจ และยอมรับข้อกำหนดทั้งหมด</label>
-      </div>
-
-      <button id="saveConsentBtn">บันทึกการยินยอม</button>
-      <div id="successMessage" class="message success"></div>
-      <div id="saveErrorMessage" class="message error"></div>
+    <hr
+    <div id="idCardSection">    
+      <h3>กรุณากรอกเลขบัตรประชาชน</h3>
+      <input type="text" id="idCardInput" placeholder="กรอกเลขบัตร 13 หลัก">
+      <button onclick="submitIdCard()">ถัดไป</button>
     </div>
   </div>
 
-  <!-- รวม script.js ภายใน <script> และเรียกหลังจาก liff.js -->
-    <!-- โหลด LIFF SDK ก่อน -->
-  <script src="https://static.line-scdn.net/liff/sdk/v2/liff.js"></script>
+  <script src="https://static.line-scdn.net/liff/edge/versions/2.9.0/sdk.js"></script>
   <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwkebYkHKmOQ70-STvMfC6uuUy9MknB9NxrVeRWgQasUFuYP1CacRod_xjroh2-yLle-A/exec';
-let userProfile = {};
+    function runApp() {
+      liff.getProfile().then(profile => {
+        document.getElementById("profileImage").src = profile.pictureUrl;
+        document.getElementById("userId").value = profile.userId;
+        document.getElementById("displayName").value = profile.displayName;
+        document.getElementById("statusMessage").value = profile.statusMessage || '-';
 
-document.addEventListener('DOMContentLoaded', async function () {
-  try {
-    // แก้จุดสำคัญ: ต้องแน่ใจว่า liff ถูกโหลดก่อนเรียกใช้
-    if (typeof liff === 'undefined') {
-      throw new Error('LIFF SDK ยังไม่ถูกโหลด');
+        document.getElementById("idCardSection").classList.remove("hidden");
+      }).catch(err => console.error('getProfile error:', err));
     }
 
-    await liff.init({ liffId: '2006679138-wW8N5Zol' }); // ← แทนค่า LIFF ID จริง
+    liff.init({ liffId: "2007674245-rxm9JVQa" }, () => {
+      if (liff.isLoggedIn()) {
+        runApp();
+      } else {
+        liff.login();
+      }
+    }, err => console.error('LIFF init error:', err));
 
-    if (!liff.isLoggedIn()) {
-      liff.login();
-      return;
+    function submitIdCard() {
+      const idCard = document.getElementById("idCardInput").value.trim();
+      if (!/^\d{13}$/.test(idCard)) {
+        alert("กรุณากรอกเลขบัตรประชาชนให้ถูกต้อง (13 หลัก)");
+        return;
+      }
+      alert("บัตรประชาชนที่กรอกคือ: " + idCard);
+      // ไปต่อขั้นตอนแสดงข้อมูล PDPA ได้ที่นี่ในขั้นตอนถัดไป
     }
-
-    const profile = await liff.getProfile();
-    userProfile = {
-      lineUserId: profile.userId,
-      displayName: profile.displayName,
-      pictureUrl: profile.pictureUrl
-    };
-
-    document.getElementById('loadingMessage').style.display = 'none';
-    document.getElementById('inputSection').style.display = 'block';
-
-  } catch (err) {
-    document.getElementById('loadingMessage').innerText = 'โหลด LIFF ไม่สำเร็จ';
-    console.error('LIFF init failed:', err);
-  }
-
-  document.getElementById('checkIdCardBtn').addEventListener('click', checkIdCard);
-  document.getElementById('saveConsentBtn').addEventListener('click', saveConsent);
-});
-
-function checkIdCard() {
-  const idCard = document.getElementById('idCardInput').value.trim();
-
-  if (!/^\d{13}$/.test(idCard)) {
-    showError('errorMessage', 'กรุณากรอกเลขบัตรให้ถูกต้อง (13 หลัก)');
-    return;
-  }
-
-  fetch(`${scriptURL}?action=checkIdCard&idCard=${idCard}`)
-    .then(response => response.json())
-    .then(data => {
-      if (data.status === 'success') {
-        document.getElementById('userTitle').innerText = data.title;
-        document.getElementById('userFirstName').innerText = data.firstName;
-        document.getElementById('userLastName').innerText = data.lastName;
-        document.getElementById('pdpaContent').innerText = data.pdpaContent;
-
-        userProfile.idCard = idCard;
-        userProfile.title = data.title;
-
-        document.getElementById('pdpaSection').style.display = 'block';
-        clearError('errorMessage');
-      } else {
-        showError('errorMessage', data.message);
-      }
-    })
-    .catch(error => {
-      showError('errorMessage', 'เกิดข้อผิดพลาดในการเชื่อมต่อ');
-      console.error(error);
-    });
-}
-
-function saveConsent() {
-  if (!document.getElementById('consentCheckbox').checked) {
-    showError('saveErrorMessage', 'กรุณาติ๊กยอมรับก่อนบันทึก');
-    return;
-  }
-
-  const formData = new URLSearchParams();
-  formData.append('action', 'saveConsent');
-  formData.append('lineUserId', userProfile.lineUserId);
-  formData.append('idCard', userProfile.idCard);
-  formData.append('consentStatus', '1');
-  formData.append('displayName', userProfile.displayName);
-  formData.append('pictureUrl', userProfile.pictureUrl);
-  formData.append('title', userProfile.title);
-
-  fetch(scriptURL, {
-    method: 'POST',
-    body: formData
-  })
-    .then(response => response.json())
-    .then(data => {
-      if (data.status === 'success') {
-        document.getElementById('successMessage').innerText = data.message;
-        clearError('saveErrorMessage');
-      } else {
-        showError('saveErrorMessage', data.message);
-      }
-    })
-    .catch(error => {
-      showError('saveErrorMessage', 'เกิดข้อผิดพลาดขณะบันทึก');
-      console.error(error);
-    });
-}
-
-function showError(id, message) {
-  const el = document.getElementById(id);
-  if (el) el.innerText = message;
-}
-
-function clearError(id) {
-  const el = document.getElementById(id);
-  if (el) el.innerText = '';
-}
   </script>
 </body>
 </html>
