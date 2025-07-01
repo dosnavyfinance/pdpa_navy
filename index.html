@@ -104,10 +104,6 @@
   </style>
 </head>
 <body>
-  <div id="loadingSpinner" class="hidden" style="text-align:center;">
-  <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
-  <p>กำลังโหลดข้อมูล...</p>
-  </div>
   <div class="container">
     <h2>แสดงข้อมูลผู้ใช้ LINE</h2>
     <img id="profileImage">
@@ -126,7 +122,12 @@
       <input type="text" id="idCardInput" placeholder="กรอกเลขบัตร 13 หลัก">
       <button onclick="showPDPASection()">ถัดไป</button>
     </div>
-
+    
+    <div id="loadingSpinner" class="hidden" style="text-align:center;">
+    <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+    <p>กำลังโหลดข้อมูล...</p>
+    </div>  
+    
     <div id="pdpaSection" class="hidden">
       <h3>นโยบายคุ้มครองข้อมูลส่วนบุคคล (PDPA)</h3>
       <div class="pdpa-box">
