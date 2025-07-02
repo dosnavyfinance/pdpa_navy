@@ -252,9 +252,10 @@
                     
                     const fullUserName = `${userTitle} ${userFirstName} ${userLastName}`.trim();
                     document.getElementById("fullUserName").textContent = fullUserName || '-';
+                    document.getElementById("idCardInput").disabled = true;
 
                     // Display PDPA content
-                    document.getElementById("pdpaContent").innerHTML = data.pdpaContent || 'ไม่มีข้อมูลนโยบายคุ้มครองข้อมูลส่วนบุคคล';
+                    //document.getElementById("pdpaContent").innerHTML = data.pdpaContent || 'ไม่มีข้อมูลนโยบายคุ้มครองข้อมูลส่วนบุคคล';
 
                     if (data.consent === '1') {
                         alert("คุณได้ยินยอมนโยบายนี้แล้ว ไม่จำเป็นต้องทำรายการซ้ำ");
