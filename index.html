@@ -267,7 +267,7 @@
                     document.getElementById("pdpaSection").classList.remove("hidden");
                     // **ส่วนที่เพิ่มเข้ามา: Disabled ช่องกรอก ID และปุ่ม "ถัดไป"**
                     idCardInput.disabled = true;
-                    nextButton.disabled = true;
+                    nextButton.style.display = 'none';
                     
                 } else if (data.status === 'notFound') {
                     alert("ไม่พบข้อมูลบัตรประชาชนนี้ในระบบ");
