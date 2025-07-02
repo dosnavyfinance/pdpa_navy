@@ -1,85 +1,85 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ลงทะเบียน PDPA</title>
-  <link href="https://fonts.googleapis.com/css2?family=Sarabun&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Sarabun', sans-serif;
-      margin: 30px;
-      background-color: #f5f5f5;
-    }
-    .container {
-      max-width: 500px;
-      margin: auto;
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-    input[type="text"] {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-      box-sizing: border-box;
-    }
-    label {
-      font-weight: bold;
-      display: block;
-      margin-bottom: 5px;
-      color: #333;
-    }
-    .hidden {
-      display: none;
-    }
-    img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 50%;
-      display: block;
-      margin: 0 auto 20px;
-      border: 2px solid #ccc;
-    }
-    h2, h3 {
-      text-align: center;
-      color: #2c3e50;
-    }
-    button {
-      padding: 10px 20px;
-      background-color: #2d87f0;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 1rem;
-      cursor: pointer;
-      width: 100%;
-      margin-top: 15px;
-    }
-    button:hover {
-      background-color: #226ccc;
-    }
-    #pdpaSection {
-      margin-top: 30px;
-    }
-    .pdpa-box {
-      max-height: 200px;
-      overflow-y: auto;
-      border: 1px solid #ccc;
-      padding: 15px;
-      border-radius: 8px;
-      background-color: #fdfdfd;
-      margin-bottom: 15px;
-    }
-    .consent-area {
-      margin-top: 10px;
-    }
-    /* Loading Overlay Styles */
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ลงทะเบียน PDPA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+            margin: 30px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .hidden {
+            display: none;
+        }
+        img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            display: block;
+            margin: 0 auto 20px;
+            border: 2px solid #ccc;
+        }
+        h2, h3 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #2d87f0;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+        }
+        button:hover {
+            background-color: #226ccc;
+        }
+        #pdpaSection {
+            margin-top: 30px;
+        }
+        .pdpa-box {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #fdfdfd;
+            margin-bottom: 15px;
+        }
+        .consent-area {
+            margin-top: 10px;
+        }
+        /* Loading Overlay Styles */
         #loadingOverlay {
             display: flex;
             justify-content: center;
@@ -92,25 +92,25 @@
             background: rgba(255, 255, 255, 0.8);
             z-index: 10000;
         }
-    .lds-ring {
-    display: inline-block;
-    position: relative;
-    width: 80px;
-    height: 80px;
-  }
-  .lds-ring div {
-    box-sizing: border-box;
-    display: block;
-    position: absolute;
-    width: 64px;
-    height: 64px;
-    margin: 8px;
-    border: 8px solid #2d87f0;
-    border-radius: 50%;
-    animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-    border-color: #2d87f0 transparent transparent transparent;
-  }
-  .lds-ring div:nth-child(1) {
+        .lds-ring {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+        .lds-ring div {
+            box-sizing: border-box;
+            display: block;
+            position: absolute;
+            width: 64px;
+            height: 64px;
+            margin: 8px;
+            border: 8px solid #2d87f0;
+            border-radius: 50%;
+            animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            border-color: #2d87f0 transparent transparent transparent;
+        }
+        .lds-ring div:nth-child(1) {
             animation-delay: -0.45s;
         }
         .lds-ring div:nth-child(2) {
@@ -119,54 +119,54 @@
         .lds-ring div:nth-child(3) {
             animation-delay: -0.15s;
         }
-  @keyframes lds-ring {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  .loading-text {
+        @keyframes lds-ring {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loading-text {
             margin-top: 20px;
             font-size: 1.2rem;
             color: #333;
         }
-  </style>
+    </style>
 
 </head>
 <body>
-  <div id="loadingOverlay">
+    <div id="loadingOverlay">
         <div style="text-align:center;">
             <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
             <p class="loading-text" id="loadingText">กำลังโหลดข้อมูล...</p>
         </div>
     </div>
-  
-  <div class="container hidden" id="mainContent">
-    <h2>แสดงข้อมูลผู้ใช้ LINE</h2>
-    <img id="profileImage">
-    <label>User ID</label>
-    <input type="text" id="userId" readonly>
 
-    <label>Display Name</label>
-    <input type="text" id="displayName" readonly>
+    <div class="container hidden" id="mainContent">
+        <h2>แสดงข้อมูลผู้ใช้ LINE</h2>
+        <img id="profileImage">
+        <label>User ID</label>
+        <input type="text" id="userId" readonly>
 
-    <label>Status Message</label>
-    <input type="text" id="statusMessage" readonly>
+        <label>Display Name</label>
+        <input type="text" id="displayName" readonly>
 
-    <hr>
-    <div id="idCardSection" class="hidden">
-      <h3>กรุณากรอกเลขบัตรประชาชน</h3>
-      <input type="text" id="idCardInput" placeholder="กรอกเลขบัตร 13 หลัก">
-      <button onclick="showPDPASection()">ถัดไป</button>
-    </div>
-    
-    <div id="pdpaSection" class="hidden">
-    <h3>ข้อมูลของคุณ</h3>
-    <p><strong>ยศ:</strong> <span id="userTitle"></span></p>
-    <p><strong>ชื่อ:</strong> <span id="userFirstName"></span></p>
-    <p><strong>นามสกุล:</strong> <span id="userLastName"></span></p>
+        <label>Status Message</label>
+        <input type="text" id="statusMessage" readonly>
 
-    <hr>
+        <hr>
+        <div id="idCardSection" class="hidden">
+            <h3>กรุณากรอกเลขบัตรประชาชน</h3>
+            <input type="text" id="idCardInput" placeholder="กรอกเลขบัตร 13 หลัก">
+            <button onclick="showPDPASection()">ถัดไป</button>
+        </div>
+        
+        <div id="pdpaSection" class="hidden">
+            <h3>ข้อมูลของคุณ</h3>
+            <p><strong>ยศ:</strong> <span id="userTitle"></span></p>
+            <p><strong>ชื่อ:</strong> <span id="userFirstName"></span></p>
+            <p><strong>นามสกุล:</strong> <span id="userLastName"></span></p>
 
-    <h3>นโยบายคุ้มครองข้อมูลส่วนบุคคล (PDPA)</h3>
+            <hr>
+            
+            <h3>นโยบายคุ้มครองข้อมูลส่วนบุคคล (PDPA)</h3>
             <div class="pdpa-box" id="pdpaContent">
                 </div>
 
