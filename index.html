@@ -128,6 +128,20 @@
             font-size: 1.2rem;
             color: #333;
         }
+        .consent-area {
+          display: flex;
+          flex-wrap: wrap;           /* ✅ ให้ข้อความห่อ */
+          align-items: center;
+          gap: 10px;
+          margin-top: 10px;
+        }
+        .consent-area input[type="checkbox"] {
+          margin: 0;
+          flex-shrink: 0;            /* ✅ ไม่ให้ checkbox ถูกย่อ */
+        }
+        .consent-area label {
+          flex: 1 1 auto;            /* ✅ ให้ label ขยายและหดได้ */
+        }
     </style>
 
 </head>
@@ -155,7 +169,7 @@
         <div id="idCardSection" class="hidden">
             <h3>กรุณากรอกเลขบัตรประชาชน</h3>
             <input type="text" id="idCardInput" placeholder="กรอกเลขบัตร 13 หลัก">
-            <button onclick="showPDPASection()">ถัดไป</button>
+            <button id="buttonNext" onclick="showPDPASection()">ถัดไป</button>
         </div>
         
         <div id="pdpaSection" class="hidden">
@@ -169,8 +183,8 @@
                 </div>
 
             <div class="consent-area" id="consentSection">
-                <input type="checkbox" id="consentCheckbox"
-                <label for="consentCheckbox">ข้าพเจ้าได้อ่านและยินยอมตามนโยบายข้างต้น</label>>
+                <input type="checkbox" id="consentCheckbox">
+                <label for="consentCheckbox">ข้าพเจ้าได้อ่านและยินยอมตามนโยบายข้างต้น</label>
             </div>
 
             <button onclick="submitConsent()">บันทึกการยินยอม</button>
@@ -253,7 +267,7 @@
                     const fullUserName = `${userTitle} ${userFirstName} ${userLastName}`.trim();
                     document.getElementById("fullUserName").textContent = fullUserName || '-';
                     document.getElementById("idCardInput").disabled = true;
-
+                    document.getElementById("buttonNext").disabled = true;
                     // Display PDPA content
                     document.getElementById("pdpaContent").innerHTML = data.pdpaContent || 'ไม่มีข้อมูลนโยบายคุ้มครองข้อมูลส่วนบุคคล';
 
