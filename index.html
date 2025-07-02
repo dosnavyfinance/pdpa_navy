@@ -128,20 +128,7 @@
             font-size: 1.2rem;
             color: #333;
         }
-        .consent-area {
-          display: flex;
-          flex-wrap: wrap;           
-          align-items: center;
-          gap: 10px;
-          margin-top: 10px;
-        }
-        .consent-area input[type="checkbox"] {
-          margin: 0;
-          flex-shrink: 0;            
-        }
-        .consent-area label {
-          flex: 1 1 auto;           
-        }
+        
     </style>
 
 </head>
@@ -169,7 +156,7 @@
         <div id="idCardSection" class="hidden">
             <h3>กรุณากรอกเลขบัตรประชาชน</h3>
             <input type="text" id="idCardInput" placeholder="กรอกเลขบัตร 13 หลัก">
-            <button id="BtnNext" onclick="showPDPASection()">ถัดไป</button>
+            <button onclick="showPDPASection()">ถัดไป</button>
         </div>
         
         <div id="pdpaSection" class="hidden">
@@ -183,8 +170,8 @@
                 </div>
 
             <div class="consent-area" id="consentSection">
-                <input type="checkbox" id="consentCheckbox">
-                <label for="consentCheckbox">ข้าพเจ้าได้อ่านและยินยอมตามนโยบายข้างต้น</label>
+                <input type="checkbox" id="consentCheckbox" style="vertical-align: middle; margin-right: 5px;">
+                <label for="consentCheckbox" style="display: inline;">ข้าพเจ้าได้อ่านและยินยอมตามนโยบายข้างต้น</label>
             </div>
 
             <button class="btn-red" onclick="submitConsent()">บันทึกการยินยอม</button>
@@ -239,7 +226,10 @@
 
         // Function to show PDPA section and fetch data
         function showPDPASection() {
-            const idCard = document.getElementById("idCardInput").value.trim();
+            const idCardInput = document.getElementById("idCardInput");
+            const nextButton = document.querySelector("#idCardSection button"); // เลือกปุ่ม "ถัดไป" ภายใน idCardSection
+            
+            const idCard = idCardInput.value.trim();
             if (!/^\d{13}$/.test(idCard)) {
                 alert("กรุณากรอกเลขบัตรประชาชนให้ถูกต้อง (13 หลัก)");
                 return;
@@ -267,8 +257,7 @@
                     const fullUserName = `${userTitle} ${userFirstName} ${userLastName}`.trim();
                     document.getElementById("fullUserName").textContent = fullUserName || '-';
                     document.getElementById("idCardInput").disabled = true;
-                    document.getElementById("BtnNext").disabled = true;
-                    // Display PDPA content
+
                     document.getElementById("pdpaContent").innerHTML = data.pdpaContent || 'ไม่มีข้อมูลนโยบายคุ้มครองข้อมูลส่วนบุคคล';
 
                     if (data.consent === '1') {
@@ -277,8 +266,11 @@
                     } else {
                         document.getElementById("consentSection").style.display = "block";
                     }
-
                     document.getElementById("pdpaSection").classList.remove("hidden");
+                    // **ส่วนที่เพิ่มเข้ามา: Disabled ช่องกรอก ID และปุ่ม "ถัดไป"**
+                    idCardInput.disabled = true;
+                    nextButton.disabled = true;
+                    
                 } else if (data.status === 'notFound') {
                     alert("ไม่พบข้อมูลบัตรประชาชนนี้ในระบบ");
                 } else {
