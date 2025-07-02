@@ -192,8 +192,28 @@
                 document.getElementById("userId").value = profile.userId;
                 document.getElementById("displayName").value = profile.displayName;
                 document.getElementById("statusMessage").value = profile.statusMessage || '-';
-
                 document.getElementById("idCardSection").classList.remove("hidden");
+
+                // 🔍 ตรวจสอบว่าเคยใช้ Line นี้ยินยอมแล้วหรือยัง
+                fetch('https://script.google.com/macros/s/AKfycb.../exec', {
+                  method: 'POST',
+                  body: new URLSearchParams({
+                    action: 'checkUserId',
+                    userId: liff.getDecodedIDToken().sub // หรือ profile.userId
+                  })
+                })
+                .then(res => res.json())
+                .then(data => {
+                  if (data.status === 'exists') {
+                    alert("คุณได้ใช้ LINE นี้ลงทะเบียนไปแล้ว");
+                    // ซ่อนแบบฟอร์มหรือ redirect ได้เลย
+                      document.getElementById("nextButton").disabled = true;
+                      document.getElementById("closeBtn").classList.remove("hidden"); // 👉 แสดงปุ่มปิด
+                  } else {
+                    document.getElementById("idCardSection").classList.remove("hidden");
+                  }
+                });
+                
             }).catch(err => {
                 hideLoading(); // Hide loading even if there's an error
                 console.error('getProfile error:', err);
