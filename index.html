@@ -52,7 +52,6 @@
         }
         button {
             padding: 10px 20px;
-            background-color: #2d87f0;
             color: white;
             border: none;
             border-radius: 6px;
@@ -156,7 +155,7 @@
         <div id="idCardSection" class="hidden">
             <h3>กรุณากรอกเลขบัตรประชาชน</h3>
             <input type="text" id="idCardInput" placeholder="กรอกเลขบัตรประชาชน 13 หลัก">
-            <button onclick="showPDPASection()" id="nextButton">ถัดไป</button>
+            <button class="btn btn-primary" onclick="showPDPASection()" id="nextButton">ถัดไป</button>
         </div>
         
         <div id="pdpaSection" class="hidden">
@@ -174,7 +173,7 @@
                 <label for="consentCheckbox" style="display: inline;">ข้าพเจ้าได้อ่านและยินยอมตามนโยบายข้างต้น</label>
             </div>
 
-            <button class="btn-red" onclick="submitConsent()">บันทึกการยินยอม</button>
+            <button class="btn btn-danger" onclick="submitConsent()">บันทึกการยินยอม</button>
         </div>
     </div>
     
