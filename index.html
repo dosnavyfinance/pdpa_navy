@@ -253,7 +253,7 @@
                         //document.getElementById("consentSection").style.display = "none";
                         document.getElementById("saveBtn").style.display = "none";
                         document.getElementById("pdpaSection").classList.add("d-none");
-                        document.getElementById("consentMessage").textContent = "คุณได้ยินยอมนโยบายนี้แล้ว";
+                        document.getElementById("consentMessage").textContent = "คุณได้ยอมรับเงื่อนไขตามนโยบายนี้แล้ว";
                     } else {
                         document.getElementById("consentSection").style.display = "block";
                     }
@@ -281,9 +281,45 @@
                 alert("กรุณายินยอมก่อนบันทึก");
                 return;
             }
-            // In a real application, you would send this consent to your backend/Google Sheet
-            alert("บันทึกความยินยอมเรียบร้อยแล้ว");
-            // You might want to disable the consent section or redirect the user here
+
+            const lineUserId = document.getElementById("userId").value;
+            const displayName = document.getElementById("displayName").value;
+            const statusMessage = document.getElementById("statusMessage").value;
+            const pictureUrl = document.getElementById("profileImage").src;
+            const idCard = document.getElementById("idCardInput").value.trim();
+            const consentStatus = '1'; // ถ้าติ๊กยินยอมก็ส่งค่า 1
+        
+            showLoading("กำลังบันทึกข้อมูล...");
+        
+            fetch("https://script.google.com/macros/s/AKfycbwkebYkHKmOQ70-STvMfC6uuUy9MknB9NxrVeRWgQasUFuYP1CacRod_xjroh2-yLle-A/exec", {
+                method: "POST",
+                body: new URLSearchParams({
+                    action: "saveConsent",
+                    lineUserId,
+                    displayName,
+                    statusMessage,
+                    pictureUrl,
+                    idCard,
+                    consentStatus
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                hideLoading();
+                if (data.status === "success") {
+                    alert("บันทึกข้อมูลเรียบร้อยแล้ว");
+                    document.getElementById("saveBtn").style.display = "none";
+                    document.getElementById("consentCheckbox").disabled = true;
+                    document.getElementById("consentMessage").textContent = "คุณได้บันทึกความยินยอมเรียบร้อยแล้ว";
+                } else {
+                    alert("เกิดข้อผิดพลาด: " + data.message);
+                }
+            })
+            .catch(err => {
+                hideLoading();
+                alert("ข้อผิดพลาดในการส่งข้อมูล: " + err.message);
+                console.error(err);
+            });
         }
     </script>
 </body>
