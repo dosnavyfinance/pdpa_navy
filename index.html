@@ -169,7 +169,7 @@
         <div id="idCardSection" class="hidden">
             <h3>กรุณากรอกเลขบัตรประชาชน</h3>
             <input type="text" id="idCardInput" placeholder="กรอกเลขบัตร 13 หลัก">
-            <button id="buttonNext" onclick="showPDPASection()">ถัดไป</button>
+            <button id="BtnNext" onclick="showPDPASection()">ถัดไป</button>
         </div>
         
         <div id="pdpaSection" class="hidden">
@@ -187,7 +187,7 @@
                 <label for="consentCheckbox">ข้าพเจ้าได้อ่านและยินยอมตามนโยบายข้างต้น</label>
             </div>
 
-            <button onclick="submitConsent()">บันทึกการยินยอม</button>
+            <button class="btn-red" onclick="submitConsent()">บันทึกการยินยอม</button>
         </div>
     </div>
     
@@ -267,7 +267,7 @@
                     const fullUserName = `${userTitle} ${userFirstName} ${userLastName}`.trim();
                     document.getElementById("fullUserName").textContent = fullUserName || '-';
                     document.getElementById("idCardInput").disabled = true;
-                    document.getElementById("buttonNext").disabled = true;
+                    document.getElementById("BtnNext").disabled = true;
                     // Display PDPA content
                     document.getElementById("pdpaContent").innerHTML = data.pdpaContent || 'ไม่มีข้อมูลนโยบายคุ้มครองข้อมูลส่วนบุคคล';
 
