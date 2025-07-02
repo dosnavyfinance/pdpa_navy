@@ -50,19 +50,7 @@
             text-align: center;
             color: #2c3e50;
         }
-        button {
-            padding: 10px 20px;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 15px;
-        }
-        button:hover {
-            background-color: #226ccc;
-        }
+        
         #pdpaSection {
             margin-top: 30px;
         }
@@ -155,7 +143,7 @@
         <div id="idCardSection" class="hidden">
             <h3>กรุณากรอกเลขบัตรประชาชน</h3>
             <input type="text" id="idCardInput" placeholder="กรอกเลขบัตรประชาชน 13 หลัก">
-            <button class="btn btn-primary" onclick="showPDPASection()" id="nextButton">ถัดไป</button>
+            <button class="btn btn-primary btn-lg btn-block" onclick="showPDPASection()" id="nextButton">ถัดไป</button>
         </div>
         
         <div id="pdpaSection" class="hidden">
@@ -173,7 +161,7 @@
                 <label for="consentCheckbox" style="display: inline;">ข้าพเจ้าได้อ่านและยินยอมตามนโยบายข้างต้น</label>
             </div>
 
-            <button class="btn btn-danger" onclick="submitConsent()">บันทึกการยินยอม</button>
+            <button class="btn btn-danger btn-lg btn-block" onclick="submitConsent()">บันทึกการยินยอม</button>
         </div>
     </div>
     
