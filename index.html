@@ -166,6 +166,7 @@
             <button type="button" class="btn btn-danger btn-lg w-100" onclick="submitConsent()" id="saveBtn">บันทึกการยินยอม</button>
         </div>
             <p id="consentMessage" style="margin-top: 10px; color: red;"></p>
+            <button type="button" class="btn btn-secondary btn-lg w-100 hidden" id="closeBtn" onclick="closeLiff()">ปิด</button>
     </div>
     
     <script src="https://static.line-scdn.net/liff/edge/versions/2.9.0/sdk.js"></script>
@@ -312,6 +313,7 @@
                     document.getElementById("saveBtn").style.display = "none";
                     document.getElementById("consentCheckbox").disabled = true;
                     document.getElementById("consentMessage").textContent = "คุณได้บันทึกความยินยอมเรียบร้อยแล้ว";
+                    document.getElementById("closeBtn").classList.remove("hidden"); // 👉 แสดงปุ่มปิด
                 } else {
                     alert("เกิดข้อผิดพลาด: " + data.message);
                 }
@@ -322,6 +324,11 @@
                 console.error(err);
             });
         }
+
+        function closeLiff() {
+          liff.closeWindow();
+        }    
+        
     </script>
 </body>
 </html>
