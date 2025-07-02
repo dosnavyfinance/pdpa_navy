@@ -163,6 +163,7 @@
             </div>
 
             <button type="button" class="btn btn-danger btn-lg w-100" onclick="submitConsent()" id="saveBtn">บันทึกการยินยอม</button>
+            <p id="consentMessage" style="margin-top: 10px; color: red;"></p>
         </div>
     </div>
     
@@ -252,6 +253,7 @@
                         //document.getElementById("consentSection").style.display = "none";
                         document.getElementById("saveBtn").style.display = "none";
                         document.getElementById("pdpaSection").classList.add("d-none");
+                        document.getElementById("consentMessage").textContent = "คุณได้ยินยอมนโยบายนี้แล้ว";
                     } else {
                         document.getElementById("consentSection").style.display = "block";
                     }
