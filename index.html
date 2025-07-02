@@ -162,7 +162,7 @@
                 <label for="consentCheckbox" style="display: inline;">ข้าพเจ้าได้อ่านและยินยอมตามนโยบายข้างต้น</label>
             </div>
 
-            <button type="button" class="btn btn-danger btn-lg w-100" onclick="submitConsent()">บันทึกการยินยอม</button>
+            <button type="button" class="btn btn-danger btn-lg w-100" onclick="submitConsent()" id="saveBtn">บันทึกการยินยอม</button>
         </div>
     </div>
     
@@ -250,7 +250,7 @@
                     if (data.consent === '1') {
                         alert("คุณได้ยินยอมนโยบายนี้แล้ว ไม่จำเป็นต้องทำรายการซ้ำ");
                         //document.getElementById("consentSection").style.display = "none";
-                        document.getElementById("nextButton").style.display = "none";
+                        document.getElementById("saveBtn").style.display = "none";
                         document.getElementById("pdpaSection").classList.remove("hidden");
                     } else {
                         document.getElementById("consentSection").style.display = "block";
