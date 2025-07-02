@@ -249,7 +249,9 @@
 
                     if (data.consent === '1') {
                         alert("คุณได้ยินยอมนโยบายนี้แล้ว ไม่จำเป็นต้องทำรายการซ้ำ");
-                        document.getElementById("consentSection").style.display = "none";
+                        //document.getElementById("consentSection").style.display = "none";
+                        document.getElementById("nextButton").style.display = "none";
+                        document.getElementById("pdpaSection").classList.remove("hidden");
                     } else {
                         document.getElementById("consentSection").style.display = "block";
                     }
@@ -257,8 +259,6 @@
                     // **ส่วนที่เพิ่มเข้ามา: Disabled ช่องกรอก ID และปุ่ม "ถัดไป"**
                     idCardInput.disabled = true;
                     nextButton.style.display = 'none';
-            console.log("idCardInput disabled:", idCardInput.disabled); // ตรวจสอบสถานะ disabled
-            console.log("nextButton display style:", nextButton.style.display); // ตรวจสอบ style.display
                     
                 } else if (data.status === 'notFound') {
                     alert("ไม่พบข้อมูลบัตรประชาชนนี้ในระบบ");
