@@ -155,7 +155,7 @@
         <hr>
         <div id="idCardSection" class="hidden">
             <h3>กรุณากรอกเลขบัตรประชาชน</h3>
-            <input type="text" id="idCardInput" placeholder="กรอกเลขบัตร 13 หลัก">
+            <input type="text" id="idCardInput" placeholder="กรอกเลขบัตรประชาชน 13 หลัก">
             <button onclick="showPDPASection()" id="nextButton">ถัดไป</button>
         </div>
         
@@ -227,7 +227,7 @@
         // Function to show PDPA section and fetch data
         function showPDPASection() {
             const idCardInput = document.getElementById("idCardInput");
-            const nextButton = document.getElementById("nextButton");
+            //const nextButton = document.getElementById("nextButton");
                 
             const idCard = idCardInput.value.trim();
             if (!/^\d{13}$/.test(idCard)) {
@@ -256,6 +256,7 @@
                     
                     const fullUserName = `${userTitle} ${userFirstName} ${userLastName}`.trim();
                     document.getElementById("fullUserName").textContent = fullUserName || '-';
+                    document.getElementById("nextButton").disabled = true;
                     document.getElementById("pdpaContent").innerHTML = data.pdpaContent || 'ไม่มีข้อมูลนโยบายคุ้มครองข้อมูลส่วนบุคคล';
 
                     if (data.consent === '1') {
@@ -267,7 +268,7 @@
                     document.getElementById("pdpaSection").classList.remove("hidden");
                     // **ส่วนที่เพิ่มเข้ามา: Disabled ช่องกรอก ID และปุ่ม "ถัดไป"**
                     idCardInput.disabled = true;
-                    nextButton.style.display = 'none';
+                    //nextButton.style.display = 'none';
                     
                 } else if (data.status === 'notFound') {
                     alert("ไม่พบข้อมูลบัตรประชาชนนี้ในระบบ");
