@@ -256,6 +256,7 @@
                         document.getElementById("saveBtn").style.display = "none";
                         document.getElementById("pdpaSection").classList.add("d-none");
                         document.getElementById("consentMessage").textContent = "คุณได้ยอมรับเงื่อนไขตามนโยบายนี้แล้ว";
+                        document.getElementById("closeBtn").classList.remove("hidden"); // 👉 แสดงปุ่มปิด
                     } else {
                         document.getElementById("consentSection").style.display = "block";
                     }
