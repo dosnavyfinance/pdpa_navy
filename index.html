@@ -156,7 +156,7 @@
         <div id="idCardSection" class="hidden">
             <h3>กรุณากรอกเลขบัตรประชาชน</h3>
             <input type="text" id="idCardInput" placeholder="กรอกเลขบัตร 13 หลัก">
-            <button onclick="showPDPASection()">ถัดไป</button>
+            <button onclick="showPDPASection()" id="nextButton">ถัดไป</button>
         </div>
         
         <div id="pdpaSection" class="hidden">
@@ -227,15 +227,15 @@
         // Function to show PDPA section and fetch data
         function showPDPASection() {
             const idCardInput = document.getElementById("idCardInput");
-            const nextButton = document.querySelector("#idCardSection button"); // เลือกปุ่ม "ถัดไป" ภายใน idCardSection
-            
+            const nextButton = document.getElementById("nextButton");
+                
             const idCard = idCardInput.value.trim();
             if (!/^\d{13}$/.test(idCard)) {
                 alert("กรุณากรอกเลขบัตรประชาชนให้ถูกต้อง (13 หลัก)");
                 return;
             }
 
-            showLoading("กำลังตรวจสอบข้อมูล..."); // Show loading when fetching PDPA data
+            showLoading("กำลังตรวจสอบข้อมูล...");
             
             fetch("https://script.google.com/macros/s/AKfycbwkebYkHKmOQ70-STvMfC6uuUy9MknB9NxrVeRWgQasUFuYP1CacRod_xjroh2-yLle-A/exec", {
                 method: "POST",
@@ -246,7 +246,7 @@
             })
             .then(res => res.json())
             .then(data => {
-                hideLoading(); // Hide loading after data is received
+                hideLoading();
                 
                 if (data.status === 'success') {
                     // **ปรับปรุงการแสดงผลข้อมูล ยศ-ชื่อ-สกุล ตรงนี้**
@@ -256,8 +256,6 @@
                     
                     const fullUserName = `${userTitle} ${userFirstName} ${userLastName}`.trim();
                     document.getElementById("fullUserName").textContent = fullUserName || '-';
-                    document.getElementById("idCardInput").disabled = true;
-
                     document.getElementById("pdpaContent").innerHTML = data.pdpaContent || 'ไม่มีข้อมูลนโยบายคุ้มครองข้อมูลส่วนบุคคล';
 
                     if (data.consent === '1') {
