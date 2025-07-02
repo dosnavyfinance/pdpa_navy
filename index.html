@@ -169,8 +169,8 @@
                 </div>
 
             <div class="consent-area" id="consentSection">
-                <input type="checkbox" id="consentCheckbox">
-                <label for="consentCheckbox">ข้าพเจ้าได้อ่านและยินยอมตามนโยบายข้างต้น</label>
+                <input type="checkbox" id="consentCheckbox"
+                <label for="consentCheckbox">ข้าพเจ้าได้อ่านและยินยอมตามนโยบายข้างต้น</label>>
             </div>
 
             <button onclick="submitConsent()">บันทึกการยินยอม</button>
@@ -255,7 +255,7 @@
                     document.getElementById("idCardInput").disabled = true;
 
                     // Display PDPA content
-                    //document.getElementById("pdpaContent").innerHTML = data.pdpaContent || 'ไม่มีข้อมูลนโยบายคุ้มครองข้อมูลส่วนบุคคล';
+                    document.getElementById("pdpaContent").innerHTML = data.pdpaContent || 'ไม่มีข้อมูลนโยบายคุ้มครองข้อมูลส่วนบุคคล';
 
                     if (data.consent === '1') {
                         alert("คุณได้ยินยอมนโยบายนี้แล้ว ไม่จำเป็นต้องทำรายการซ้ำ");
