@@ -149,7 +149,7 @@
         
         <div id="pdpaSection" class="hidden">
             <h3>ข้อมูลของคุณ</h3>
-            <p><strong>ยศ-ชื่อ-สกุล:</strong> <span id="fullUserName"></span></p>
+            <p><strong>ยศ-ชื่อ-สกุล: </strong> <span id="fullUserName"></span></p>
 
             <hr>
             
@@ -207,7 +207,7 @@
                   if (data.status === 'exists') {
                     alert("คุณได้ใช้ LINE นี้ลงทะเบียนไปแล้ว");
                     // ซ่อนแบบฟอร์มหรือ redirect ได้เลย
-                      document.getElementById("nextButton").disabled = true;
+                      document.getElementById("nextButton").style.display = 'none';
                       document.getElementById("closeBtn").classList.remove("hidden"); // 👉 แสดงปุ่มปิด
                   } else {
                     document.getElementById("idCardSection").classList.remove("hidden");
