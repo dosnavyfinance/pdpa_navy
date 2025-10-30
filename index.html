@@ -196,7 +196,7 @@
                 document.getElementById("idCardSection").classList.remove("hidden");
 
                 // 🔍 ตรวจสอบว่าเคยใช้ Line นี้ยินยอมแล้วหรือยัง
-                fetch("https://script.google.com/macros/s/AKfycbwkebYkHKmOQ70-STvMfC6uuUy9MknB9NxrVeRWgQasUFuYP1CacRod_xjroh2-yLle-A/exec", {
+                fetch("https://script.google.com/macros/s/AKfycbztxMsVpuUKuDdHM9JoOb2GxvO4A6ZzTrYhLeFvWrB-HiIZtWo7dISYH2MhaPRGZzF0/exec", {
                   method: 'POST',
                   body: new URLSearchParams({
                     action: 'checkUserId',
@@ -249,7 +249,7 @@
 
             showLoading("กำลังตรวจสอบข้อมูล...");
             
-            fetch("https://script.google.com/macros/s/AKfycbwkebYkHKmOQ70-STvMfC6uuUy9MknB9NxrVeRWgQasUFuYP1CacRod_xjroh2-yLle-A/exec", {
+            fetch("https://script.google.com/macros/s/AKfycbztxMsVpuUKuDdHM9JoOb2GxvO4A6ZzTrYhLeFvWrB-HiIZtWo7dISYH2MhaPRGZzF0/exec", {
                 method: "POST",
                 body: new URLSearchParams({
                     action: "checkIdCard",
@@ -315,7 +315,7 @@
         
             showLoading("กำลังบันทึกข้อมูล...");
         
-            fetch("https://script.google.com/macros/s/AKfycbwkebYkHKmOQ70-STvMfC6uuUy9MknB9NxrVeRWgQasUFuYP1CacRod_xjroh2-yLle-A/exec", {
+            fetch("https://script.google.com/macros/s/AKfycbztxMsVpuUKuDdHM9JoOb2GxvO4A6ZzTrYhLeFvWrB-HiIZtWo7dISYH2MhaPRGZzF0/exec", {
                 method: "POST",
                 body: new URLSearchParams({
                     action: "saveConsent",
