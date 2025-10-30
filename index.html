@@ -162,7 +162,7 @@
                 <input type="radio" id="consentCheckbox" name="pdpa_consent" value="1" style="vertical-align: middle; margin-right: 5px;">
                 <label for="consentCheckbox" style="display: inline;">ยินยอม</label>
                 
-                <input type="radio" id="consentCheckbox2" name="pdpa_consent" value="0" style="vertical-align: middle; margin-right: 5px;">
+                <input type="radio" id="consentCheckbox2" name="pdpa_consent" value="0" style="vertical-align: middle; margin-right: 5px; margin-left: 20px;">
                 <label for="consentCheckbox2" style="display: inline;">ไม่ยินยอม</label>
             </div>
             
@@ -305,51 +305,66 @@
 
         // Function to submit consent
         function submitConsent() {
-            if (!document.getElementById("consentCheckbox").checked) {
-                alert("กรุณายินยอมก่อนบันทึก");
-                return;
-            }
-
-            const lineUserId = document.getElementById("userId").value;
-            const displayName = document.getElementById("displayName").value;
-            const statusMessage = document.getElementById("statusMessage").value;
-            const pictureUrl = document.getElementById("profileImage").src;
-            const idCard = document.getElementById("idCardInput").value.trim();
-            const consentStatus = '1'; // ถ้าติ๊กยินยอมก็ส่งค่า 1
-        
-            showLoading("กำลังบันทึกข้อมูล...");
-        
-            fetch("https://script.google.com/macros/s/AKfycbztxMsVpuUKuDdHM9JoOb2GxvO4A6ZzTrYhLeFvWrB-HiIZtWo7dISYH2MhaPRGZzF0/exec", {
-                method: "POST",
-                body: new URLSearchParams({
-                    action: "saveConsent",
-                    lineUserId,
-                    displayName,
-                    statusMessage,
-                    pictureUrl,
-                    idCard,
-                    consentStatus
-                })
-            })
-            .then(res => res.json())
-            .then(data => {
-                hideLoading();
-                if (data.status === "success") {
-                    alert("บันทึกข้อมูลเรียบร้อยแล้ว");
-                    document.getElementById("saveBtn").style.display = "none";
-                    document.getElementById("consentCheckbox").disabled = true;
-                    document.getElementById("consentMessage").textContent = "คุณได้บันทึกความยินยอมเรียบร้อยแล้ว";
-                    document.getElementById("closeBtn").classList.remove("hidden"); // 👉 แสดงปุ่มปิด
-                } else {
-                    alert("เกิดข้อผิดพลาด: " + data.message);
+    
+                // 1. ดึง Radio Button ที่ถูกเลือก
+                const selectedConsent = document.querySelector('input[name="pdpa_consent"]:checked');
+            
+                // 2. ตรวจสอบว่าต้องเลือกอย่างใดอย่างหนึ่ง (บังคับเลือก)
+                if (!selectedConsent) {
+                    alert("กรุณาเลือกอย่างใดอย่างหนึ่ง (ยินยอม หรือ ไม่ยินยอม) ก่อนบันทึก");
+                    return; // หยุดการทำงาน
                 }
-            })
-            .catch(err => {
-                hideLoading();
-                alert("ข้อผิดพลาดในการส่งข้อมูล: " + err.message);
-                console.error(err);
-            });
-        }
+                
+                // 3. กำหนดค่า consentStatus: ดึงค่า value ('1' หรือ '0') จาก Radio Button ที่ถูกเลือก
+                const consentStatus = selectedConsent.value; 
+            
+                // 4. ดึงค่าฟอร์มอื่นๆ
+                const lineUserId = document.getElementById("userId").value;
+                const displayName = document.getElementById("displayName").value;
+                const statusMessage = document.getElementById("statusMessage").value;
+                const pictureUrl = document.getElementById("profileImage").src;
+                const idCard = document.getElementById("idCardInput").value.trim();
+                // const consentStatus = '1'; // ลบโค้ดเดิมที่ไม่ถูกต้อง
+            
+                showLoading("กำลังบันทึกข้อมูล...");
+            
+                // 5. ส่งข้อมูลไปยัง Apps Script
+                fetch("https://script.google.com/macros/s/AKfycbztxMsVpuUKuDdHM9JoOb2GxvO4A6ZzTrYhLeFvWrB-HiIZtWo7dISYH2MhaPRGZzF0/exec", {
+                    method: "POST",
+                    body: new URLSearchParams({
+                        action: "saveConsent",
+                        lineUserId,
+                        displayName,
+                        statusMessage,
+                        pictureUrl,
+                        idCard,
+                        consentStatus // <-- ค่าเป็น '1' หรือ '0' ตามที่เลือก
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    hideLoading();
+                    if (data.status === "success") {
+                        alert("บันทึกข้อมูลเรียบร้อยแล้ว");
+                        document.getElementById("saveBtn").style.display = "none";
+                        
+                        // ปิดการใช้งาน Radio Buttons ทั้งหมด
+                        document.querySelectorAll('input[name="pdpa_consent"]').forEach(radio => {
+                            radio.disabled = true;
+                        });
+            
+                        document.getElementById("consentMessage").textContent = "คุณได้บันทึกความยินยอมเรียบร้อยแล้ว";
+                        document.getElementById("closeBtn").classList.remove("hidden"); 
+                    } else {
+                        alert("เกิดข้อผิดพลาด: " + data.message);
+                    }
+                })
+                .catch(err => {
+                    hideLoading();
+                    alert("ข้อผิดพลาดในการส่งข้อมูล: " + err.message);
+                    console.error(err);
+                });
+            }
 
         function closeLiff() {
           liff.closeWindow();
