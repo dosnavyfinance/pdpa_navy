@@ -159,12 +159,12 @@
                 </div>
 
             <div class="consent-area" id="consentSection">
-              <label><input type="radio" name="consentOption" value="1"> ยินยอม</label><br>
-              <label><input type="radio" name="consentOption" value="0"> ไม่ยินยอม</label>
+                <input type="checkbox" id="consentCheckbox" style="vertical-align: middle; margin-right: 5px;">
+                <label for="consentCheckbox" style="display: inline;">ข้าพเจ้าได้อ่านและทำความเข้าใจวัตถุประสงค์ของการเก็บรวบรวม ใช้ และเปิดเผยข้อมูลส่วนบุคคลข้างต้นแล้ว และขอให้ความยินยอมในการเก็บรวบรวม ใช้ และเปิดเผยข้อมูลส่วนบุคคลของข้าพเจ้า เพื่อวัตถุประสงค์ดังกล่าว</label>
             </div>
             <br>
             <br>
-            <button type="button" class="btn btn-danger btn-lg w-100" onclick="submitConsent()" id="saveBtn">บันทึก</button>
+            <button type="button" class="btn btn-danger btn-lg w-100" onclick="submitConsent()" id="saveBtn">บันทึกการยินยอม</button>
         </div>
             <p id="consentMessage" style="margin-top: 10px; color: red;"></p>
             <button type="button" class="btn btn-info btn-lg w-100 hidden" id="closeBtn" onclick="closeLiff()">ปิด</button>
