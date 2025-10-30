@@ -158,19 +158,13 @@
             <div class="pdpa-box" id="pdpaContent">
                 </div>
 
-            <!-- <div class="consent-area" id="consentSection">
-                <input type="checkbox" id="consentCheckbox" style="vertical-align: middle; margin-right: 5px;">
-                <label for="consentCheckbox" style="display: inline;">ข้าพเจ้าได้อ่านและทำความเข้าใจวัตถุประสงค์ของการเก็บรวบรวม ใช้ และเปิดเผยข้อมูลส่วนบุคคลข้างต้นแล้ว และขอให้ความยินยอมในการเก็บรวบรวม ใช้ และเปิดเผยข้อมูลส่วนบุคคลของข้าพเจ้า เพื่อวัตถุประสงค์ดังกล่าว</label>
-            </div> -->
-
             <div class="consent-area" id="consentSection">
               <label><input type="radio" name="consentOption" value="1"> ยินยอม</label><br>
               <label><input type="radio" name="consentOption" value="0"> ไม่ยินยอม</label>
             </div>
-            
             <br>
             <br>
-            <button type="button" class="btn btn-danger btn-lg w-100" onclick="submitConsent()" id="saveBtn">บันทึกการยินยอม</button>
+            <button type="button" class="btn btn-danger btn-lg w-100" onclick="submitConsent()" id="saveBtn">บันทึก</button>
         </div>
             <p id="consentMessage" style="margin-top: 10px; color: red;"></p>
             <button type="button" class="btn btn-info btn-lg w-100 hidden" id="closeBtn" onclick="closeLiff()">ปิด</button>
@@ -243,61 +237,67 @@
         });
 
         // Function to show PDPA section and fetch data
-        function showPDPASection(data) {
-              // data คือข้อมูลที่ส่งกลับมาจาก Google Apps Script เช่น
-              // {
-              //   status: 'success',
-              //   title: 'นาย',
-              //   firstName: 'สมชาย',
-              //   lastName: 'ใจดี',
-              //   pdpaContent: 'เนื้อหาข้อความ PDPA',
-              //   consent: '1' // หรือ '0' หรือ ''
-              // }
-            
-              const fullName = `${data.title || ''} ${data.firstName || ''} ${data.lastName || ''}`.trim();
-              const pdpaSection = document.getElementById("pdpaSection");
-              const consentSection = document.getElementById("consentSection");
-              const saveBtn = document.getElementById("saveBtn");
-              const consentMessage = document.getElementById("consentMessage");
-              const closeBtn = document.getElementById("closeBtn");
-            
-              // ใส่ข้อมูลชื่อและเนื้อหา PDPA
-              document.getElementById("fullUserName").textContent = fullName || '-';
-              document.getElementById("pdpaContent").innerHTML = data.pdpaContent || 'ไม่มีเนื้อหา PDPA';
-            
-              // ซ่อนส่วนกรอกเลขบัตร และปุ่ม "ถัดไป"
-              document.getElementById("inputSection").style.display = "none";
-            
-              // แสดงส่วน PDPA
-              pdpaSection.classList.remove("hidden");
-            
-              // ล้างข้อความเดิมก่อนหน้า
-              consentMessage.textContent = "";
-              closeBtn.classList.add("hidden");
-            
-              // กรณีพบว่ามีสถานะการยินยอมแล้ว
-              if (data.consent === '1') {
-                document.querySelector('input[name="consentOption"][value="1"]').checked = true;
-                consentSection.style.display = "none"; // ซ่อนตัวเลือก
-                saveBtn.style.display = "none";        // ซ่อนปุ่มบันทึก
-                consentMessage.textContent = "✅ คุณได้ยินยอมตามนโยบายคุ้มครองข้อมูลส่วนบุคคลแล้ว";
-                closeBtn.classList.remove("hidden");
-              }
-              // กรณีเคยเลือก "ไม่ยินยอม"
-              else if (data.consent === '0') {
-                document.querySelector('input[name="consentOption"][value="0"]').checked = true;
-                consentSection.style.display = "none";
-                saveBtn.style.display = "none";
-                consentMessage.textContent = "⚠️ คุณได้เลือกไม่ยินยอมตามนโยบายคุ้มครองข้อมูลส่วนบุคคล";
-                closeBtn.classList.remove("hidden");
-              }
-              // กรณียังไม่เคยยินยอม
-              else {
-                document.querySelectorAll('input[name="consentOption"]').forEach(opt => opt.checked = false);
-                consentSection.style.display = "block";
-                saveBtn.style.display = "block";
-              }
+        function showPDPASection() {
+            const idCardInput = document.getElementById("idCardInput");
+            const nextButton = document.getElementById("nextButton");
+                
+            const idCard = idCardInput.value.trim();
+            if (!/^\d{13}$/.test(idCard)) {
+                alert("กรุณากรอกเลขบัตรประชาชนให้ถูกต้อง (13 หลัก)");
+                return;
             }
+
+            showLoading("กำลังตรวจสอบข้อมูล...");
+            
+            fetch("https://script.google.com/macros/s/AKfycbztxMsVpuUKuDdHM9JoOb2GxvO4A6ZzTrYhLeFvWrB-HiIZtWo7dISYH2MhaPRGZzF0/exec", {
+                method: "POST",
+                body: new URLSearchParams({
+                    action: "checkIdCard",
+                    idCard: idCard
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                hideLoading();
+                
+                if (data.status === 'success') {
+                    // **ปรับปรุงการแสดงผลข้อมูล ยศ-ชื่อ-สกุล ตรงนี้**
+                    const userTitle = data.title || '';
+                    const userFirstName = data.firstName || '';
+                    const userLastName = data.lastName || '';
+                    const fullUserName = `${userTitle} ${userFirstName} ${userLastName}`.trim();
+                    
+                    document.getElementById("fullUserName").textContent = fullUserName || '-';
+                    //document.getElementById("nextButton").disabled = true;
+                    document.getElementById("pdpaContent").innerHTML = data.pdpaContent || 'ไม่มีข้อมูลนโยบายคุ้มครองข้อมูลส่วนบุคคล';
+
+                    if (data.consent === '1') {
+                        alert("คุณได้ยินยอมนโยบายนี้แล้ว ไม่จำเป็นต้องทำรายการซ้ำ");
+                        //document.getElementById("consentSection").style.display = "none";
+                        document.getElementById("saveBtn").style.display = "none";
+                        document.getElementById("pdpaSection").classList.add("d-none");
+                        document.getElementById("consentMessage").textContent = "คุณได้ยอมรับเงื่อนไขตามนโยบายนี้แล้ว";
+                        document.getElementById("closeBtn").classList.remove("hidden"); // 👉 แสดงปุ่มปิด
+                    } else {
+                        document.getElementById("consentSection").style.display = "block";
+                    }
+                    document.getElementById("pdpaSection").classList.remove("hidden");
+                    // **ส่วนที่เพิ่มเข้ามา: Disabled ช่องกรอก ID และปุ่ม "ถัดไป"**
+                    idCardInput.disabled = true;
+                    nextButton.style.display = 'none';
+                    
+                } else if (data.status === 'notFound') {
+                    alert("ไม่พบข้อมูลบัตรประชาชนนี้ในระบบ");
+                } else {
+                    alert(data.message || "เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ");
+                }
+            })
+            .catch(err => {
+                hideLoading(); // Hide loading if an error occurs during fetch
+                alert("เกิดข้อผิดพลาดในการดึงข้อมูล: " + err.message);
+                console.error('Fetch error:', err);
+            });
+        }
 
         // Function to submit consent
         function submitConsent() {
@@ -350,32 +350,7 @@
         function closeLiff() {
           liff.closeWindow();
         }    
-        async function checkIdCard() {
-  const idCard = document.getElementById("idCardInput").value.trim();
-  if (!/^\d{13}$/.test(idCard)) {
-    alert("กรุณากรอกเลขบัตรประชาชนให้ถูกต้อง (13 หลัก)");
-    return;
-  }
-
-  showLoading("กำลังตรวจสอบข้อมูล...");
-
-  try {
-    const res = await fetch(SCRIPT_URL + "?action=checkIdCard&idCard=" + idCard);
-    const data = await res.json();
-    hideLoading();
-
-    if (data.status === "success") {
-      showPDPASection(data); // ✅ เรียกใช้ฟังก์ชันนี้
-    } else {
-      alert(data.message || "ไม่พบข้อมูลในระบบ");
-    }
-  } catch (err) {
-    hideLoading();
-    alert("เกิดข้อผิดพลาด: " + err.message);
-    console.error(err);
-  }
-}
-
+        
     </script>
 </body>
 </html>
