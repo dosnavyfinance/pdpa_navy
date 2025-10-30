@@ -158,13 +158,22 @@
             <div class="pdpa-box" id="pdpaContent">
                 </div>
 
-            <div class="consent-area" id="consentSection">
+            <!-- <div class="consent-area" id="consentSection">
                 <input type="checkbox" id="consentCheckbox" style="vertical-align: middle; margin-right: 5px;">
-                <label for="consentCheckbox" style="display: inline;">ข้าพเจ้าได้อ่านและทำความเข้าใจวัตถุประสงค์ของการเก็บรวบรวม ใช้ และเปิดเผยข้อมูลส่วนบุคคลข้างต้นแล้ว และขอให้ความยินยอมในการเก็บรวบรวม ใช้ และเปิดเผยข้อมูลส่วนบุคคลของข้าพเจ้า เพื่อวัตถุประสงค์ดังกล่าว</label>
+                <label for="consentCheckbox" style="display: inline;">ยินยอม</label>
+                <input type="checkbox" id="consentCheckbox2" style="vertical-align: middle; margin-right: 5px;">
+                <label for="consentCheckbox2" style="display: inline;">ไม่ยินยอม</label>
+            </div> -->
+            <div class="consent-area" id="consentSection">
+                <input type="radio" id="consentCheckbox" name="pdpa_consent" value="1" style="vertical-align: middle; margin-right: 5px;">
+                <label for="consentCheckbox" style="display: inline;">ยินยอม</label>
+                
+                <input type="radio" id="consentCheckbox2" name="pdpa_consent" value="0" style="vertical-align: middle; margin-right: 5px;">
+                <label for="consentCheckbox2" style="display: inline;">ไม่ยินยอม</label>
             </div>
             <br>
             <br>
-            <button type="button" class="btn btn-danger btn-lg w-100" onclick="submitConsent()" id="saveBtn">บันทึกการยินยอม</button>
+            <button type="button" class="btn btn-danger btn-lg w-100" onclick="submitConsent()" id="saveBtn">บันทึกข้อมูล</button>
         </div>
             <p id="consentMessage" style="margin-top: 10px; color: red;"></p>
             <button type="button" class="btn btn-info btn-lg w-100 hidden" id="closeBtn" onclick="closeLiff()">ปิด</button>
@@ -301,17 +310,60 @@
 
         // Function to submit consent
         function submitConsent() {
-            if (!document.getElementById("consentCheckbox").checked) {
-                alert("กรุณายินยอมก่อนบันทึก");
-                return;
-            }
+            // if (!document.getElementById("consentCheckbox").checked) {
+            //     alert("กรุณายินยอมก่อนบันทึก");
+            //     return;
+            // }
 
+                const consentCheckbox = document.getElementById("consentCheckbox");
+                const declineCheckbox = document.getElementById("consentCheckbox2");
+                
+                const consentChecked = consentCheckbox.checked;
+                const declineChecked = declineCheckbox.checked;
+            
+                // 1. ตรวจสอบว่าต้องเลือกอย่างใดอย่างหนึ่ง
+                if (!consentChecked && !declineChecked) {
+                    alert("กรุณาเลือกอย่างใดอย่างหนึ่ง (ยินยอม หรือ ไม่ยินยอม) ก่อนบันทึก");
+                    return; // หยุดการทำงาน
+                }
+            
+                // 2. [Optional] หากต้องการบังคับให้เลือกได้เพียงตัวเดียว:
+                if (consentChecked && declineChecked) {
+                    alert("กรุณาเลือกเพียงอย่างใดอย่างหนึ่งเท่านั้น");
+                    return; 
+                }
+            
+                // 3. กำหนดค่า consentStatus ตามตัวเลือกที่ถูกเลือก
+                let consentStatus;
+                
+                if (consentChecked) {
+                    consentStatus = '1'; // ยินยอม
+                } else if (declineChecked) {
+                    consentStatus = '0'; // ไม่ยินยอม
+                } else {
+                    // กรณีนี้ไม่ควรเกิดขึ้นแล้ว เพราะถูกดักไว้ในเงื่อนไขแรก
+                    return; 
+                }
+            console.log("Consent Status ที่จะส่ง: " + consentStatus);
+            // 4. ดำเนินการส่งข้อมูลไปยัง Google Apps Script (ตัวอย่าง fetch/AJAX)
+    // ตัวอย่าง: การเรียกฟังก์ชัน saveConsent ใน Apps Script
+    
+    
+    const dataToSend = {
+        action: 'saveConsent',
+        consentStatus: consentStatus, // ค่าที่ต้องการส่ง 1 หรือ 0
             const lineUserId = document.getElementById("userId").value;
             const displayName = document.getElementById("displayName").value;
             const statusMessage = document.getElementById("statusMessage").value;
             const pictureUrl = document.getElementById("profileImage").src;
             const idCard = document.getElementById("idCardInput").value.trim();
-            const consentStatus = '1'; // ถ้าติ๊กยินยอมก็ส่งค่า 1
+    };
+
+
+
+            
+
+            // const consentStatus = '1'; // ถ้าติ๊กยินยอมก็ส่งค่า 1
         
             showLoading("กำลังบันทึกข้อมูล...");
         
